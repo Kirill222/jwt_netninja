@@ -10,8 +10,8 @@ app.use(express.static('public'));
 app.set('view engine', 'ejs');
 
 // database connection
-const dbURI = 'mongodb+srv://shaun:test1234@cluster0.del96.mongodb.net/node-auth';
-mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex:true })
+const dbURI = 'mongodb+srv://kirill:kirill@cluster0.w7dqn.mongodb.net/jwt_netninja?retryWrites=true&w=majority';
+mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex:true }, () => console.log('DB connected'))
   .then((result) => app.listen(3000))
   .catch((err) => console.log(err));
 
