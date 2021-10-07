@@ -16,9 +16,7 @@ const handleErrors = (err) => {
     }
 
     //validation errors
-    if(err.message.includes('user validation failed')) {
-        console.log(Object.values(err.errors))  //returns an array of object values, without the keys of the object
-        
+    if(err.message.includes('user validation failed')) {        
         Object.values(err.errors).forEach(({properties}) => {
             errors[properties.path] = properties.message
         })
