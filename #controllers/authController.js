@@ -9,8 +9,18 @@ const handleErrors = (err) => {
         email: '',
         password: '',
     } 
+
+    //incorrect email
+    if(err.message === 'incorrect email') {
+        errors.email = 'that email is not registered'       
+    } 
+
+    //incorrect email
+    if(err.message === 'incorrect password') {
+        errors.password = 'wrong password'       
+    }
     
-    //duplicate error code
+    //duplicate error code (implemented when signup)
     if (err. code === 11000) {
         errors.email = 'This email is already registered'
         return errors
@@ -63,10 +73,13 @@ module.exports.login_post = async (req, res) => {
     const {email, password} = req.body
 
     try {
-        const user = await User.login(email, password)
+        const user = await User.login(email, password) //custom method to implement the logic on logging in defined in User model
+        const token = createToken(user._id)
+        res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge * 1000})
         res.status(200).json({user: user._id})
     } 
-    catch (error) {
-        res.status(400).json({})
+    catch (err) {
+        const errors = handleErrors(err)
+        res.status(400).json({errors})
     }
 }
