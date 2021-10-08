@@ -26,6 +26,7 @@ const handleErrors = (err) => {
     return errors
 }
 
+//create token
 const maxAge = 3*24*60*60 //time of JWT is in seconds, time of cookies in miliseconds
 const createToken = (id) => {
     return jwt.sign({id}, 'net ninja secret', {
@@ -60,7 +61,12 @@ module.exports.signup_post = async (req, res) => {
 module.exports.login_post = async (req, res) => {
     
     const {email, password} = req.body
-    console.log(email, password)
 
-    res.send('user login')
+    try {
+        const user = await User.login(email, password)
+        res.status(200).json({user: user._id})
+    } 
+    catch (error) {
+        res.status(400).json({})
+    }
 }

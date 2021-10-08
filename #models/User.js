@@ -31,6 +31,21 @@ userSchema.pre('save', async function(next) {
     next()
 })
 
+//STATIC CUSTOM METHOD TO LOGIN USER. This method will be used in login_post controller
+userSchema.statics.login = async function(email, password) {
+    const user = await this.findOne({email})
+
+    if(user) {
+        const auth = bcrypt.compare(password, user.password)
+        if (auth) {
+            return user
+        }
+        throw Error('incorrect password')
+    }
+
+    throw Error('incorrect email')
+}
+
 
 const User = mongoose.model('user', userSchema)
 
